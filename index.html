@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 Hành Trình Đến Trái Tim Cậu 💖</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Pacifico&display=swap');
+
+*{box-sizing:border-box}
+:root{--pink:#ff55b8;--white:#fff}
+body{
+ margin:0;min-height:100vh;overflow:hidden;color:white;
+ font-family:Nunito,sans-serif;
+ background:#10082e;
+}
+#scene{
+ position:fixed;inset:0;overflow-y:auto;
+ background:linear-gradient(135deg,#160b43,#641b99,#ff58a9);
+ background-size:300% 300%;
+ animation:bg 12s ease infinite;
+ transition:background 1s;
+}
+@keyframes bg{50%{background-position:100% 100%}}
+#scene[data-page="1"]{background-image:linear-gradient(135deg,#062e59,#126b9b,#55d9ff)}
+#scene[data-page="2"]{background-image:linear-gradient(135deg,#104e45,#29a77a,#b8f58c)}
+#scene[data-page="3"]{background-image:linear-gradient(135deg,#46136d,#b92c93,#ff9aaf)}
+#scene[data-page="4"]{background-image:linear-gradient(135deg,#40104f,#9e267d,#ff8aaf)}
+#scene[data-page="5"]{background-image:linear-gradient(135deg,#17134c,#8e29b8,#ff4c9b)}
+#scene[data-page="6"]{background-image:linear-gradient(135deg,#5b155f,#ed3f88,#ffbd70)}
+.stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.star{position:absolute;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{to{opacity:.2;transform:scale(.6)}}
+.screen{
+ display:none;position:relative;z-index:1;
+ min-height:100dvh;padding:65px 17px 95px;
+ align-items:center;justify-content:center;flex-direction:column;
+ text-align:center;
+}
+.screen.active{display:flex;animation:enter .8s cubic-bezier(.2,.8,.2,1)}
+@keyframes enter{
+ from{opacity:0;transform:translateY(35px) scale(.96);filter:blur(8px)}
+ to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+h1{font-size:clamp(29px,8vw,48px);line-height:1.4;margin:12px 0;text-shadow:0 0 25px #ff8be0}
+h2{color:#fff4a6;font-size:23px}
+p{line-height:1.9;font-size:15px}
+.script{font-family:Pacifico,cursive;color:#fff49a}
+.panel{
+ width:min(100%,530px);padding:24px 19px;
+ border:1px solid #ffffff70;border-radius:28px;
+ background:#ffffff19;backdrop-filter:blur(13px);
+ box-shadow:0 0 35px #ffffff18,0 15px 40px #14002525;
+}
+.planet{
+ width:155px;height:155px;border-radius:50%;
+ display:grid;place-items:center;font-size:100px;
+ margin:20px auto;position:relative;
+ animation:float 3s ease-in-out infinite;
+ filter:drop-shadow(0 0 20px #81eaff);
+}
+.planet:after{
+ content:"";position:absolute;inset:-12px;
+ border:2px dashed #fff9a9;border-radius:50%;
+ animation:spin 18s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-13px) rotate(5deg)}}
+button{
+ font-family:inherit;font-weight:900;border:0;cursor:pointer;
+ transition:transform .2s,filter .2s;
+ -webkit-tap-highlight-color:transparent;
+}
+button:active{transform:scale(.94)}
+.next,.answer{
+ border-radius:25px;padding:13px 22px;
+ background:linear-gradient(100deg,#fff39a,#ff83cb,#c8a3ff);
+ color:#68145d;box-shadow:0 0 20px #ff9bdd55;
+}
+.next{margin-top:22px;font-size:15px}
+.next:hover{filter:brightness(1.15);transform:scale(1.04)}
+.small{font-size:12px;opacity:.8}
+.map{font-size:33px;letter-spacing:6px;margin:15px 0}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:18px 0}
+.chip{padding:9px 12px;border-radius:18px;background:#ffffff24;border:1px solid #ffffff65;font-size:13px}
+.answers{display:grid;gap:11px;margin-top:18px}
+.answer{width:100%;font-size:14px;background:#ffffff23;color:white;border:1px solid #ffffff75;box-shadow:none}
+.answer:hover{background:#ffffff45}
+#quizResult{min-height:28px;margin-top:12px;color:#fff49a;font-weight:900}
+.letter{text-align:left;line-height:2}
+.letter strong{color:#fff49a}
+.heart{
+ position:fixed;bottom:-40px;pointer-events:none;z-index:5;
+ animation:rise linear forwards;
+}
+@keyframes rise{to{transform:translateY(-115vh) rotate(360deg) scale(1.5);opacity:0}}
+.nav{
+ position:fixed;z-index:10;bottom:12px;left:50%;
+ transform:translateX(-50%);display:flex;align-items:center;gap:9px;
+ padding:9px 12px;border-radius:30px;background:#170c3b8c;
+ border:1px solid #ffffff55;backdrop-filter:blur(12px);
+ max-width:95%;white-space:nowrap;
+}
+.nav button{background:#ffffff20;color:white;border-radius:20px;padding:10px 13px}
+.nav button:disabled{opacity:.25}
+#counter{font-size:12px;min-width:40px}
+.progress{position:fixed;z-index:11;top:0;left:0;width:100%;height:4px;background:#ffffff30}
+#bar{height:100%;width:16.6%;background:linear-gradient(90deg,#fff38c,#ff4fa8,#9eeaff);transition:width .6s}
+#music{position:fixed;top:13px;right:12px;z-index:12;border-radius:24px;padding:10px 13px;background:#ffffff25;color:white;border:1px solid #ffffff60}
+#final{display:none;margin-top:18px;animation:enter .8s}
+#final.show{display:block}
+.glow{animation:glow 2s infinite alternate}
+@keyframes glow{to{text-shadow:0 0 20px #fff,0 0 35px #ff55c8}}
+</style>
+</head>
+<body>
+<div id="scene" data-page="0">
+ <div class="stars" id="stars"></div>
+ <div class="progress"><div id="bar"></div></div>
+ <button id="music" onclick="toggleMusic()">🎵 Bật nhạc</button>
+
+ <!-- PHẦN 1 -->
+ <section class="screen active" id="p0">
+  <div class="panel">
+   <div class="small">✦ MỘT CHUYẾN DU HÀNH ĐẶC BIỆT ✦</div>
+   <div class="planet">🌎</div>
+   <h1>WELCOME TO<br><span class="script">Love Galaxy 💗</span></h1>
+   <p>Giữa hàng tỷ người trên Trái Đất,<br>có một người khiến tim tớ rung động... 🌷</p>
+   <div class="chips"><span class="chip">🌌 Vũ trụ</span><span class="chip">🌍 Địa Lí</span><span class="chip">💘 Tình yêu</span></div>
+   <button class="next" onclick="go(1)">🚀 Bắt đầu hành trình</button>
+  </div>
+ </section>
+
+ <!-- PHẦN 2 -->
+ <section class="screen" id="p1">
+  <div class="panel">
+   <div class="small">CHƯƠNG 01 · HÀNH TINH XANH</div>
+   <h1>🌍 Trái Đất<br><span class="script">của chúng ta</span></h1>
+   <div class="planet">🌏</div>
+   <p>Trái Đất có đại dương xanh, những dãy núi hùng vĩ và hàng triệu điều kỳ diệu.</p>
+   <p>Nhưng với tớ, điều tuyệt vời nhất không nằm trong sách Địa Lí...</p>
+   <h2 class="glow">Mà là sự xuất hiện của cậu! 💖</h2>
+   <button class="next" onclick="go(2)">🗺️ Khám phá bản đồ →</button>
+  </div>
+ </section>
+
+ <!-- PHẦN 3 -->
+ <section class="screen" id="p2">
+  <div class="panel">
+   <div class="small">CHƯƠNG 02 · BẢN ĐỒ THANH XUÂN</div>
+   <h1>🧭 Tìm kiếm<br><span class="script">tọa độ trái tim</span></h1>
+   <div class="map">🌏 🗺️ 🌎</div>
+   <div class="chips">
+    <span class="chip">🌏 Châu Á</span>
+    <span class="chip">🌍 Châu Âu</span>
+    <span class="chip">🌎 Châu Mỹ</span>
+    <span class="chip">🌊 Đại dương</span>
+    <span class="chip">🏔️ Núi cao</span>
+    <span class="chip">🏝️ Đảo xanh</span>
+   </div>
+   <p>Tớ đã đi qua những miền đất tưởng tượng, vượt những đại dương mênh mông...</p>
+   <p><b>📍 Và cuối cùng, tớ muốn dừng chân bên cạnh cậu.</b></p>
+   <button class="next" onclick="go(3)">📚 Làm bài kiểm tra tình yêu</button>
+  </div>
+ </section>
+
+ <!-- PHẦN 4 -->
+ <section class="screen" id="p3">
+  <div class="panel">
+   <div class="small">CHƯƠNG 03 · TRẮC NGHIỆM ĐỊA LÍ 💫</div>
+   <h1>📚 Quiz<br><span class="script">trái tim</span></h1>
+   <p>Trả lời câu hỏi để mở khóa bí mật nhé! 💌</p>
+   <h2 id="question">Câu 1: Trái Đất có bao nhiêu châu lục theo cách phân chia phổ biến?</h2>
+   <div class="answers" id="answers">
+    <button class="answer" onclick="answer(0)">A. 5 châu lục 🌎</button>
+    <button class="answer" onclick="answer(1)">B. 6 châu lục 🌍</button>
+    <button class="answer" onclick="answer(2)">C. 7 châu lục 🌏</button>
+   </div>
+   <div id="quizResult"></div>
+   <button class="next" id="quizNext" style="display:none" onclick="go(4)">💌 Mở lá thư bí mật</button>
+  </div>
+ </section>
+
+ <!-- PHẦN 5 -->
+ <section class="screen" id="p4">
+  <div class="panel">
+   <div class="small">CHƯƠNG 04 · THƯ GỬI NGƯỜI ĐẶC BIỆT</div>
+   <h1>💌 Dear<br><span class="script">My Crush</span></h1>
+   <div class="planet" style="font-size:80px">💌</div>
+   <div class="letter">
+    Gửi cậu, người đặc biệt trong bản đồ thanh xuân của tớ! 🌸<br><br>
+    Nếu tình yêu là một đại dương, tớ nguyện làm con sóng cứ mãi tìm về phía cậu. 🌊<br><br>
+    Nếu cuộc đời là một tấm bản đồ, <strong>cậu chính là tọa độ mà trái tim tớ luôn muốn tìm đến.</strong> 📍<br><br>
+    Dù khoảng cách giữa chúng ta có dài như đường xích đạo, tớ vẫn muốn thu hẹp nó bằng những quan tâm nhỏ bé mỗi ngày. 💗<br><br>
+    Tớ không giỏi xác định kinh độ, vĩ độ của hạnh phúc, nhưng mỗi lần nhìn thấy cậu, tim tớ lại rung động.<br><br>
+    <strong>Và hôm nay, tớ muốn nói ra điều này...</strong>
+   </div>
+   <button class="next" onclick="go(5)">💖 Đọc lời tỏ tình</button>
+  </div>
+ </section>
+
+ <!-- PHẦN 6 -->
+ <section class="screen" id="p5">
+  <div class="panel">
+   <div class="small">CHƯƠNG 05 · ĐÍCH ĐẾN CỦA HÀNH TRÌNH</div>
+   <div class="planet">💗</div>
+   <h1 class="glow">TỚ THÍCH CẬU!</h1>
+   <p>Trong hàng tỷ người trên thế giới,<br>tớ đã vô tình tìm thấy một người thật đặc biệt.<br><br>
+   <span class="script">Người ấy chính là cậu! 🌷</span></p>
+   <h2>Cậu có đồng ý cùng tớ viết tiếp câu chuyện này không? 🥹</h2>
+   <div class="answers">
+    <button class="next" style="width:100%" onclick="accept()">💖 ĐỒNG Ý NÈ!</button>
+    <button class="answer" id="noBtn" onclick="reject()">🙈 Cho tớ suy nghĩ nhé</button>
+   </div>
+   <div id="final"></div>
+  </div>
+ </section>
+
+ <div class="nav">
+  <button id="prev" onclick="go(page-1)">←</button>
+  <span id="counter">1 / 6</span>
+  <button id="nextNav" onclick="go(page+1)">Tiếp →</button>
+ </div>
+</div>
+
+<script>
+let page=0;
+const scene=document.getElementById('scene');
+const screens=[...document.querySelectorAll('.screen')];
+
+function go(n){
+ if(n<0||n>=screens.length)return;
+ screens[page].classList.remove('active');
+ page=n;
+ scene.dataset.page=page;
+ screens[page].classList.add('active');
+ document.getElementById('counter').textContent=(page+1)+' / '+screens.length;
+ document.getElementById('bar').style.width=((page+1)/screens.length*100)+'%';
+ document.getElementById('prev').disabled=page===0;
+ document.getElementById('nextNav').disabled=page===screens.length-1;
+ document.getElementById('nextNav').style.display=page===screens.length-1?'none':'block';
+ scene.scrollTo({top:0,behavior:'smooth'});
+ if(page===5)for(let i=0;i<8;i++)setTimeout(makeHeart,i*180);
+}
+
+const starBox=document.getElementById('stars');
+for(let i=0;i<85;i++){
+ let s=document.createElement('span');
+ s.className='star';
+ s.textContent=['✦','✧','✨','·','⭐'][Math.floor(Math.random()*5)];
+ s.style.left=Math.random()*100+'%';
+ s.style.top=Math.random()*100+'%';
+ s.style.fontSize=(8+Math.random()*15)+'px';
+ s.style.animationDelay=Math.random()*3+'s';
+ starBox.appendChild(s);
+}
+
+let quizStep=0;
+function answer(choice){
+ const q=document.getElementById('question');
+ const a=document.getElementById('answers');
+ const r=document.getElementById('quizResult');
+ if(quizStep===0){
+  r.textContent=choice===2
+   ?'🎉 Chính xác! Cậu giỏi quá!'
+   :'💗 Đáp án phổ biến là 7 châu lục nhé!';
+  quizStep=1;
+  q.textContent='Câu 2: Tọa độ tớ muốn đến nhất là ở đâu?';
+  a.innerHTML=`
+   <button class="answer" onclick="answer(0)">A. Bắc Cực 🧊</button>
+   <button class="answer" onclick="answer(1)">B. Bên cạnh cậu 💗</button>
+   <button class="answer" onclick="answer(2)">C. Sao Hỏa 🚀</button>`;
+ }else{
+  r.textContent=choice===1
+   ?'💘 Đúng rồi! Cậu hiểu trái tim tớ ghê!'
+   :'🌷 Đáp án bí mật là: bên cạnh cậu!';
+  a.innerHTML='<button class="answer" onclick="resetQuiz()">🔄 Chơi lại quiz</button>';
+  document.getElementById('quizNext').style.display='inline-block';
+  quizStep=2;
+ }
+}
+function resetQuiz(){
+ quizStep=0;
+ document.getElementById('question').textContent='Câu 1: Trái Đất có bao nhiêu châu lục theo cách phân chia phổ biến?';
+ document.getElementById('answers').innerHTML=`
+  <button class="answer" onclick="answer(0)">A. 5 châu lục 🌎</button>
+  <button class="answer" onclick="answer(1)">B. 6 châu lục 🌍</button>
+  <button class="answer" onclick="answer(2)">C. 7 châu lục 🌏</button>`;
+ document.getElementById('quizResult').textContent='';
+ document.getElementById('quizNext').style.display='none';
+}
+
+function makeHeart(){
+ const h=document.createElement('div');
+ h.className='heart';
+ h.textContent=['💗','💖','💕','🌸','💘','✨','🌷','🦋'][Math.floor(Math.random()*8)];
+ h.style.left=Math.random()*100+'vw';
+ h.style.fontSize=(18+Math.random()*25)+'px';
+ h.style.animationDuration=(4+Math.random()*4)+'s';
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),8500);
+}
+setInterval(makeHeart,500);
+
+function accept(){
+ const f=document.getElementById('final');
+ f.classList.add('show');
+ f.innerHTML=`
+  <h2 class="glow">🎉 YAYYYYY! 💖</h2>
+  🌍 Tọa độ hạnh phúc: bên cạnh nhau<br>
+  🧭 Hướng đi: cùng tạo kỷ niệm<br>
+  💗 Khoảng cách: mong ngày càng gần nhau<br><br>
+  <strong>Cảm ơn cậu đã cho tớ cơ hội nhé! 🥹🌷</strong><br>
+  <p>Từ hôm nay, chúng ta hãy cùng vẽ nên bản đồ kỷ niệm của riêng mình! 💞</p>
+  <button class="next" onclick="message()">💌 Nhắn tin cho tớ</button>
+  <button class="answer" onclick="go(0)">🌌 Xem lại hành trình</button>`;
+ document.getElementById('noBtn').style.display='none';
+ for(let i=0;i<45;i++)setTimeout(makeHeart,i*75);
+}
+function reject(){
+ const b=document.getElementById('noBtn');
+ b.textContent='🥺 Nghĩ lại nha!';
+ b.style.transform=`translate(${Math.random()*35-17}px,${Math.random()*20-10}px)`;
+ document.getElementById('final').classList.add('show');
+ document.getElementById('final').innerHTML=
+  '🌷 Không sao đâu, tớ tôn trọng câu trả lời của cậu. Cảm ơn cậu đã đọc hết lời nhắn này nhé! 💗';
+}
+function message(){
+ // Thay URL bên dưới bằng link Facebook của bạn.
+ window.open('https://www.facebook.com/','_blank');
+}
+
+// Giai điệu điện tử vui nhẹ, không cần file nhạc ngoài.
+let ctx=null,musicOn=false,timer=null,idx=0;
+function toggleMusic(){
+ const btn=document.getElementById('music');
+ if(musicOn){
+  clearInterval(timer);musicOn=false;btn.textContent='🎵 Bật nhạc';return;
+ }
+ try{
+  ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state==='suspended')ctx.resume();
+  musicOn=true;btn.textContent='🔇 Tắt nhạc';
+  const notes=[523,659,784,659,587,698,880,698];
+  function note(){
+   if(!musicOn)return;
+   const o=ctx.createOscillator(),g=ctx.createGain();
+   o.type='sine';o.frequency.value=notes[idx++%notes.length];
+   g.gain.setValueAtTime(.0001,ctx.currentTime);
+   g.gain.exponentialRampToValueAtTime(.035,ctx.currentTime+.05);
+   g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.4);
+   o.connect(g);g.connect(ctx.destination);
+   o.start();o.stop(ctx.currentTime+.42);
+  }
+  note();timer=setInterval(note,450);
+ }catch(e){btn.textContent='🎵 Không phát được';}
+}
+go(0);
+</script>
+</body>
+</html>
